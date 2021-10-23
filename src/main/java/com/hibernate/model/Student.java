@@ -40,7 +40,7 @@ public class Student {
 	@Lob
 	private Byte[] blob;
 	@Lob
-	private String clob;
+	private String clob; 
 	
 	
 }
