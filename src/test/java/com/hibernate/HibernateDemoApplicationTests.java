@@ -1,4 +1,4 @@
-package com.hibernate.HibernateDemo;
+package com.hibernate;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
