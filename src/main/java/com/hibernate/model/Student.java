@@ -7,7 +7,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 import lombok.AllArgsConstructor;
@@ -42,5 +44,10 @@ public class Student {
 	@Lob
 	private String clob; 
 	
+	private Certificate certificate;
+
+	@OneToOne
+	@JoinColumn(name = "dept_id")
+	private Department department;
 	
 }

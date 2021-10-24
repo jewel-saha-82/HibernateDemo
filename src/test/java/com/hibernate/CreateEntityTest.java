@@ -3,7 +3,9 @@ package com.hibernate;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.assertj.core.api.Assertions;
 import org.assertj.core.api.BDDAssertions;
+import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -13,6 +15,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -60,6 +63,7 @@ public class CreateEntityTest {
 		BDDAssertions.then(student.getId()).isGreaterThan(0);
 	}
 
+	@Disabled
 	@Test
 	@Order(3)
 	void getStudent() {
@@ -92,6 +96,7 @@ public class CreateEntityTest {
 		BDDAssertions.then(resultList.size()).isNotEqualTo(0);
 	}
 
+	@Disabled
 	@Test
 	@Order(6)
 	void update() {
@@ -128,6 +133,21 @@ public class CreateEntityTest {
 		Transaction tx = session.beginTransaction();
 		consumer.accept(student);
 		tx.commit();
+	}
+
+	@Test
+	void getVsLoad() {
+
+		Student student = session.get(Student.class, 5L);
+		BDDAssertions.then(student).isNotNull();
+		session.get(Student.class, 5L);
+		session.get(Student.class, 5L);
+		session.get(Student.class, 5L);
+		
+		Assertions.assertThatThrownBy(() -> {
+			Student s1 = session.load(Student.class, 1000L);
+			s1.getAge();
+		}).isInstanceOf(ObjectNotFoundException.class);
 	}
 
 }

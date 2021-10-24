@@ -14,6 +14,7 @@
 		<property name="hibernate.format_sql">true</property>
 		
 		<mapping class="com.hibernate.model.Student" />
+		<mapping class="com.hibernate.model.Department" />
 		
 	</session-factory>
 </hibernate-configuration>
