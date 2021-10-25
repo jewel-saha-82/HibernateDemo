@@ -1,5 +1,6 @@
 package com.hibernate;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -21,6 +22,8 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import com.hibernate.model.Customer;
+import com.hibernate.model.Product;
 import com.hibernate.model.Student;
 
 @TestMethodOrder(OrderAnnotation.class)
@@ -148,6 +151,37 @@ public class CreateEntityTest {
 			Student s1 = session.load(Student.class, 1000L);
 			s1.getAge();
 		}).isInstanceOf(ObjectNotFoundException.class);
+	}
+
+	@Test
+	void manyToManyTest() {
+		Transaction tx = session.beginTransaction();
+
+		Customer c1 = Customer.builder().name("A").build();
+		Customer c2 = Customer.builder().name("B").build();
+		Customer c3 = Customer.builder().name("C").build();
+
+		Product p1 = Product.builder().name("W").build();
+		p1.setCustomers(Arrays.asList(c1, c2, c3));
+
+		session.save(c1);
+		session.save(c2);
+		session.save(c3);
+		session.save(p1);
+
+		Product p2 = Product.builder().name("X").build();
+		Product p3 = Product.builder().name("Y").build();
+		Product p4 = Product.builder().name("Z").build();
+
+		Customer c4 = Customer.builder().name("D").build();
+		c4.setProducts(Arrays.asList(p2, p3, p4));
+
+		session.save(p2);
+		session.save(p3);
+		session.save(p4);
+		session.save(c4);
+
+		tx.commit();
 	}
 
 }
