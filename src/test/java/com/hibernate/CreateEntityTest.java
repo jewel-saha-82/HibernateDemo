@@ -52,6 +52,7 @@ public class CreateEntityTest {
 		session.close();
 	}
 
+	@Disabled
 	@Test
 	@Order(1)
 	void insertStudent() {
@@ -78,6 +79,7 @@ public class CreateEntityTest {
 		BDDAssertions.then(student.getId()).isEqualTo(id);
 	}
 
+	@Disabled
 	@Test
 	@Order(2)
 	void doesStudentExist() {
@@ -89,6 +91,7 @@ public class CreateEntityTest {
 		BDDAssertions.then(student).isNull();
 	}
 
+	@Disabled
 	@Test
 	@Order(4)
 	void listStudents() {
@@ -116,6 +119,7 @@ public class CreateEntityTest {
 
 	}
 
+	@Disabled
 	@Test
 	@Order(5)
 	void deleteStudent() {
@@ -138,6 +142,7 @@ public class CreateEntityTest {
 		tx.commit();
 	}
 
+	@Disabled
 	@Test
 	void getVsLoad() {
 
@@ -153,6 +158,7 @@ public class CreateEntityTest {
 		}).isInstanceOf(ObjectNotFoundException.class);
 	}
 
+	@Disabled
 	@Test
 	void manyToManyTest() {
 		Transaction tx = session.beginTransaction();
@@ -167,21 +173,28 @@ public class CreateEntityTest {
 		session.save(c1);
 		session.save(c2);
 		session.save(c3);
+
 		session.save(p1);
 
-		Product p2 = Product.builder().name("X").build();
-		Product p3 = Product.builder().name("Y").build();
-		Product p4 = Product.builder().name("Z").build();
+		System.out.println("P1 ID = " + p1.getId());
 
-		Customer c4 = Customer.builder().name("D").build();
-		c4.setProducts(Arrays.asList(p2, p3, p4));
+		session.delete(p1);
 
-		session.save(p2);
-		session.save(p3);
-		session.save(p4);
-		session.save(c4);
+		session.save(p1);
+
+		System.out.println("P1 ID = " + p1.getId());
 
 		tx.commit();
+
+		
+	}
+
+	//@Disabled
+	@Test
+	void lazyEgarTest() {
+		Product p5 = session.get(Product.class, 1);
+		System.out.println("P5 ID = " + p5.getId());
+		//System.out.println("Cusomers = " + p5.getCustomers());
 	}
 
 }

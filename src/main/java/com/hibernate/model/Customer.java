@@ -25,6 +25,6 @@ public class Customer {
     private int id;
     private String name;
 
-    @ManyToMany//(mappedBy = "customers")
+    @ManyToMany(mappedBy = "customers")
     private List<Product> products;
 }
